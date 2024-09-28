@@ -34,7 +34,7 @@ services:
       ALLOW_SECURE_COOKIES: true
 
       # Sensitive Data Encryption Key while storing in Database (32 character)
-      DATA_ENCRYPTION_KEY: ********************************
+      DATA_ENCRYPTION_KEY: $$cap_gen_random_hex(32)
 
       # Hoppscotch App Domain Config
       REDIRECT_URL: http://localhost:3000
@@ -42,20 +42,20 @@ services:
       VITE_ALLOWED_AUTH_PROVIDERS: GOOGLE,GITHUB,MICROSOFT,EMAIL
 
       # Google Auth Config
-      GOOGLE_CLIENT_ID: *****
-      GOOGLE_CLIENT_SECRET: *****
+      GOOGLE_CLIENT_ID: $$cap_gen_random_hex(32)
+      GOOGLE_CLIENT_SECRET: $$cap_gen_random_hex(32)
       GOOGLE_CALLBACK_URL: http://localhost:3170/v1/auth/google/callback
       GOOGLE_SCOPE: email,profile
 
       # Github Auth Config
-      GITHUB_CLIENT_ID: *****
-      GITHUB_CLIENT_SECRET: ****
+      GITHUB_CLIENT_ID: $$cap_gen_random_hex(32)
+      GITHUB_CLIENT_SECRET: $$cap_gen_random_hex(32)
       GITHUB_CALLBACK_URL: http://localhost:3170/v1/auth/github/callback
       GITHUB_SCOPE: user:email
 
       # Microsoft Auth Config
-      MICROSOFT_CLIENT_ID: *****
-      MICROSOFT_CLIENT_SECRET: *****
+      MICROSOFT_CLIENT_ID: $$cap_gen_random_hex(32)
+      MICROSOFT_CLIENT_SECRET: $$cap_gen_random_hex(32)
       MICROSOFT_CALLBACK_URL: http://localhost:3170/v1/auth/microsoft/callback
       MICROSOFT_SCOPE: user.read
       MICROSOFT_TENANT: common
