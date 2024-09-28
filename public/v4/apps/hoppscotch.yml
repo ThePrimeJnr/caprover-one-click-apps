@@ -16,6 +16,7 @@ services:
     restart: always
     depends_on:
       - $$cap_appname-db
+    command: pnpx prisma migrate deploy && node prod_run.mjs
     environment:
       #-----------------------Backend Config------------------------------#
       # Prisma Config
