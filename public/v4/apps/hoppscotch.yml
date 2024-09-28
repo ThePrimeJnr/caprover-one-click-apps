@@ -11,14 +11,12 @@ services:
       POSTGRES_DB: $$cap_db_name
     caproverExtra:
       notExposeAsWebApp: true
-  $$cap_appname-app:
-    image: hoppscotch/hoppscotch:latest
+  $$cap_appname-backend:
+    image: hoppscotch/hoppscotch-backend:latest
     restart: always
     depends_on:
       - $$cap_appname-db
-    command: pnpx prisma migrate deploy # && node prod_run.mjs
     environment:
-      #-----------------------Backend Config------------------------------#
       # Prisma Config
       DATABASE_URL: postgres://$$cap_db_user:$$cap_db_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
 
@@ -39,7 +37,7 @@ services:
 
       # Hoppscotch App Domain Config
       REDIRECT_URL: http://localhost:3000
-      WHITELISTED_ORIGINS: http://localhost:3170,http://localhost:3000,http://localhost:3100
+      WHITELISTED_ORIGINS: http://localhost:3000,http://frontend:3000,http://admin:3000
       VITE_ALLOWED_AUTH_PROVIDERS: GOOGLE,GITHUB,MICROSOFT,EMAIL
 
       # Google Auth Config
@@ -77,9 +75,12 @@ services:
       # Rate Limit Config
       RATE_LIMIT_TTL: 60 # In seconds
       RATE_LIMIT_MAX: 100 # Max requests per IP
-
-      #-----------------------Frontend Config------------------------------#
-
+  $$cap_appname-app:
+    image: hoppscotch/hoppscotch:latest
+    restart: always
+    depends_on:
+      - $$cap_appname-backend
+    environment:
       # Base URLs
       VITE_BASE_URL: http://localhost:3000
       VITE_SHORTCODE_BASE_URL: http://localhost:3000
@@ -96,12 +97,28 @@ services:
 
       # Set to `true` for subpath based access
       ENABLE_SUBPATH_BASED_ACCESS: false
-  # $$cap_appname-app:
-  #   image: hoppscotch/hoppscotch:latest
-  #   restart: always
-  # $$cap_appname-admin:
-  #   image: hoppscotch/hoppscotch-admin:latest
-  #   restart: always
+  $$cap_appname-admin:
+    image: hoppscotch/hoppscotch-admin:latest
+    restart: always
+    depends_on:
+      - $$cap_appname-backend
+    environment:
+      # Base URLs
+      VITE_BASE_URL: http://localhost:3000
+      VITE_SHORTCODE_BASE_URL: http://localhost:3000
+      VITE_ADMIN_URL: http://localhost:3100
+
+      # Backend URLs
+      VITE_BACKEND_GQL_URL: http://localhost:3170/graphql
+      VITE_BACKEND_WS_URL: wss://localhost:3170/graphql
+      VITE_BACKEND_API_URL: http://localhost:3170/v1
+
+      # Terms Of Service And Privacy Policy Links (Optional)
+      VITE_APP_TOS_LINK: https://docs.hoppscotch.io/support/terms
+      VITE_APP_PRIVACY_POLICY_LINK: https://docs.hoppscotch.io/support/privacy
+
+      # Set to `true` for subpath based access
+      ENABLE_SUBPATH_BASED_ACCESS: false
 caproverOneClickApp:
     variables:
       - id: $$cap_db_version
