@@ -11,27 +11,41 @@ services:
       POSTGRES_DB: $$cap_db_name
     caproverExtra:
       notExposeAsWebApp: true
+  $$cap_appname-backend:
+    image: hoppscotch/hoppscotch-backend:latest
+    restart: always
+    depends_on:
+      - $$cap_appname-db
+    environment:
+      DATABASE_URL: postgres://$$cap_db_user:$$cap_db_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
+      PORT: 8080
+  $$cap_appname-app:
+    image: hoppscotch/hoppscotch:latest
+    restart: always
+  $$cap_appname-admin:
+    image: hoppscotch/hoppscotch-admin:latest
+    restart: always
 caproverOneClickApp:
     variables:
       - id: $$cap_db_version
         label: Database Version
         description: The version of the database to use
-        defaultValue: 15
-        validRegex: "^(9|10|11|12|13|14|15)$"
+        defaultValue: '15'
+        validRegex: "^[0-9.]+$"
       - id: $$cap_db_user
         label: Database User
         description: The user to use for the database
-        defaultValue: hoppscotch
+        defaultValue: hoppscotch_user
         validRegex: "^[a-zA-Z0-9_]+$"
       - id: $$cap_db_password
         label: Database Password
         description: The password to use for the database
-        defaultValue: hoppscotch
-        validRegex: "^[a-zA-Z0-9_]+$"
+        defaultValue: $$cap_gen_random_hex(16)
+        validRegex: /^(\w|[^\s"'\\])+$/
       - id: $$cap_db_name
         label: Database Name
         description: The name of the database to use
-        defaultValue: hoppscotch
+        defaultValue: hoppscotch_db
         validRegex: "^[a-zA-Z0-9_]+$"
     instructions:
       start: >-
