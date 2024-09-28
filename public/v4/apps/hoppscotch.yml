@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: $$cap_db_name
     caproverExtra:
       notExposeAsWebApp: true
-  $$cap_appname-backend:
+  $$cap_appname-app:
     image: hoppscotch/hoppscotch:latest
     restart: always
     depends_on:
