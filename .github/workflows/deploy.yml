@@ -5,13 +5,31 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  validate-build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 14
-      - run: npm ci && npm run publish
-        env:
-          GITHUB_PERSONAL_TOKEN: ${{secrets.GITHUB_PERSONAL_TOKEN}}
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate One Click Apps
+        run: npm run validate
+
+      - name: Build
+        run: npm run build && ls
+
+      - name: Deploy to Github Pages
+        uses: JamesIves/github-pages-deploy-action@4.6.6
+        with:
+          branch: gh-pages
+          folder: dist
+          git-config-name: ThePrimeJnr
+          git-config-email: destiny+github-action@theprimejnr.com
