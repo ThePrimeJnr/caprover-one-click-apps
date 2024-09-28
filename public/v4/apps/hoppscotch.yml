@@ -31,22 +31,21 @@ caproverOneClickApp:
         label: Database Version
         description: The version of the database to use
         defaultValue: '15'
-        validRegex: "^[0-9.]+$"
+        validRegex: /^[0-9.]+$/
       - id: $$cap_db_user
         label: Database User
         description: The user to use for the database
         defaultValue: hoppscotch_user
-        validRegex: "^[a-zA-Z0-9_]+$"
+        validRegex: /^[a-zA-Z0-9_]+$/
       - id: $$cap_db_password
         label: Database Password
-        description: The password to use for the database
-        defaultValue: $$cap_gen_random_hex(16)
-        validRegex: /^(\w|[^\s"'\\])+$/
+        description: 'Password strength minimal requeriments: Should contain at least one digit, one lower case, one upper case, one special character and at least 12 from the mentioned characters.'
+        validRegex: /^(?=.*[A-Z])(?=.*[/!?@±#§$€%^&*()\\-_=+{}~+´ºª`^"';:,<.>\|\]\[])(?=.*[0-9])(?=.*[a-z]).{12,}$/
       - id: $$cap_db_name
         label: Database Name
         description: The name of the database to use
         defaultValue: hoppscotch_db
-        validRegex: "^[a-zA-Z0-9_]+$"
+        validRegex: /^[a-zA-Z0-9_]+$/
     instructions:
       start: >-
         Hoppscotch is an open-source API development ecosystem. It helps you create, share, maintain, and visualize APIs. This one-click app will deploy Hoppscotch with a PostgreSQL database.
