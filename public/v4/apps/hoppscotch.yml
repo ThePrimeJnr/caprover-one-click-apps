@@ -18,13 +18,12 @@ services:
       - $$cap_appname-db
     environment:
       DATABASE_URL: postgres://$$cap_db_user:$$cap_db_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
-      PORT: 8080
-  $$cap_appname-app:
-    image: hoppscotch/hoppscotch:latest
-    restart: always
-  $$cap_appname-admin:
-    image: hoppscotch/hoppscotch-admin:latest
-    restart: always
+  # $$cap_appname-app:
+  #   image: hoppscotch/hoppscotch:latest
+  #   restart: always
+  # $$cap_appname-admin:
+  #   image: hoppscotch/hoppscotch-admin:latest
+  #   restart: always
 caproverOneClickApp:
     variables:
       - id: $$cap_db_version
@@ -36,21 +35,22 @@ caproverOneClickApp:
         label: Database User
         description: The user to use for the database
         defaultValue: hoppscotch_user
-        validRegex: /^[a-zA-Z0-9_]+$/
+        validRegex: /^[a-z0-9_]+$/
       - id: $$cap_db_password
         label: Database Password
-        description: 'Password strength minimal requeriments: Should contain at least one digit, one lower case, one upper case, one special character and at least 12 from the mentioned characters.'
-        validRegex: /^(?=.*[A-Z])(?=.*[/!?@±#§$€%^&*()\\-_=+{}~+´ºª`^"';:,<.>\|\]\[])(?=.*[0-9])(?=.*[a-z]).{12,}$/
+        description: 'The password to use for the database'
+        defaultValue: $$cap_gen_random_hex(16)
+        validRegex: /^(\w|[^\s"'\\])+$/
       - id: $$cap_db_name
         label: Database Name
         description: The name of the database to use
-        defaultValue: hoppscotch_db
-        validRegex: /^[a-zA-Z0-9_]+$/
+        defaultValue: hoppscotch
+        validRegex: /^[a-z0-9_]+$/
     instructions:
       start: >-
         Hoppscotch is an open-source API development ecosystem. It helps you create, share, maintain, and visualize APIs. This one-click app will deploy Hoppscotch with a PostgreSQL database.
       end: >-
-        Hoppscotch is now deployed with a PostgreSQL database. You can access it by clicking on the "Open App" button.
+        Hoppscotch is now deployed and ready to use. You can access it by clicking on the "Open Web App" button below.
     displayName: Hoppscotch
     isOfficial: true
     description: An open-source API development ecosystem
