@@ -10,6 +10,10 @@ permissions:
 jobs:
   validate-build-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{vars.URL}}
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -27,12 +31,13 @@ jobs:
         run: npm run validate_apps
 
       - name: Build
-        run: npm run build && ls dist/
-
-      - name: Deploy to Github Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        run: npm run build
+  
+      - name: Deploy on Server
+        uses: appleboy/scp-action@master
         with:
-          branch: gh-pages
-          folder: dist
-          git-config-name: ThePrimeJnr
-          git-config-email: destiny+github-action@theprimejnr.com
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: dist/*
+          target: /var/www/caprover/
