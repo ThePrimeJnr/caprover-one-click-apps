@@ -18,6 +18,7 @@ services:
       - $$cap_appname-db
     environment:
       DATABASE_URL: postgres://$$cap_db_user:$$cap_db_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
+      JWT_SECRET: $$cap_gen_random_hex(32)
   # $$cap_appname-app:
   #   image: hoppscotch/hoppscotch:latest
   #   restart: always
