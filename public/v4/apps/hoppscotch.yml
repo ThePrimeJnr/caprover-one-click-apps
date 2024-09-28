@@ -1,85 +1,85 @@
 captainVersion: 4
 services:
-  # $$cap_appname-db:
-  #   image: postgres:$$cap_db_version
-  #   volumes:
-  #     - $$cap_appname-db-data:/var/lib/postgresql/data
-  #   restart: always
-  #   environment:
-  #     POSTGRES_USER: $$cap_db_user
-  #     POSTGRES_PASSWORD: $$cap_db_password
-  #     POSTGRES_DB: $$cap_db_name
-  #   caproverExtra:
-  #     notExposeAsWebApp: true
-  # $$cap_appname-backend:
-  #   image: hoppscotch/hoppscotch-backend:latest
-  #   restart: always
-  #   depends_on:
-  #     - $$cap_appname-db
-  #   environment:
-  #     # Prisma Config
-  #     DATABASE_URL: postgres://$$cap_db_user:$$cap_db_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
+  $$cap_appname-db:
+    image: postgres:$$cap_db_version
+    volumes:
+      - $$cap_appname-db-data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: $$cap_db_user
+      POSTGRES_PASSWORD: $$cap_db_password
+      POSTGRES_DB: $$cap_db_name
+    caproverExtra:
+      notExposeAsWebApp: true
+  $$cap_appname-backend:
+    image: hoppscotch/hoppscotch-backend:latest
+    restart: always
+    depends_on:
+      - $$cap_appname-db
+    environment:
+      # Prisma Config
+      DATABASE_URL: postgres://$$cap_db_user:$$cap_db_password@srv-captain--$$cap_appname-db:5432/$$cap_db_name
 
-  #     # Auth Tokens Config
-  #     JWT_SECRET: $$cap_gen_random_hex(32)
-  #     TOKEN_SALT_COMPLEXITY: 10
-  #     MAGIC_LINK_TOKEN_VALIDITY: 3
-  #     REFRESH_TOKEN_VALIDITY: 604800000 # Default validity is 7 days (604800000 ms) in ms
-  #     ACCESS_TOKEN_VALIDITY: 86400000 # Default validity is 1 day (86400000 ms) in ms
-  #     SESSION_SECRET: anothersecretcode123
+      # Auth Tokens Config
+      JWT_SECRET: $$cap_gen_random_hex(32)
+      TOKEN_SALT_COMPLEXITY: 10
+      MAGIC_LINK_TOKEN_VALIDITY: 3
+      REFRESH_TOKEN_VALIDITY: 604800000 # Default validity is 7 days (604800000 ms) in ms
+      ACCESS_TOKEN_VALIDITY: 86400000 # Default validity is 1 day (86400000 ms) in ms
+      SESSION_SECRET: anothersecretcode123
 
-  #     # Recommended to be true. Set to false if you are using http.
-  #     # Note: Some auth providers may not support http requests and may stop working when set to false.
-  #     ALLOW_SECURE_COOKIES: true
+      # Recommended to be true. Set to false if you are using http.
+      # Note: Some auth providers may not support http requests and may stop working when set to false.
+      ALLOW_SECURE_COOKIES: true
 
-  #     # Sensitive Data Encryption Key while storing in Database (32 character)
-  #     DATA_ENCRYPTION_KEY: $$cap_gen_random_hex(32)
+      # Sensitive Data Encryption Key while storing in Database (32 character)
+      DATA_ENCRYPTION_KEY: $$cap_gen_random_hex(32)
 
-  #     # Hoppscotch App Domain Config
-  #     REDIRECT_URL: http://localhost:3000
-  #     WHITELISTED_ORIGINS: http://localhost:3000,http://frontend:3000,http://admin:3000
-  #     VITE_ALLOWED_AUTH_PROVIDERS: GOOGLE,GITHUB,MICROSOFT,EMAIL
+      # Hoppscotch App Domain Config
+      REDIRECT_URL: http://localhost:3000
+      WHITELISTED_ORIGINS: http://localhost:3000,http://frontend:3000,http://admin:3000
+      VITE_ALLOWED_AUTH_PROVIDERS: GOOGLE,GITHUB,MICROSOFT,EMAIL
 
-  #     # Google Auth Config
-  #     GOOGLE_CLIENT_ID: $$cap_gen_random_hex(32)
-  #     GOOGLE_CLIENT_SECRET: $$cap_gen_random_hex(32)
-  #     GOOGLE_CALLBACK_URL: http://localhost:3170/v1/auth/google/callback
-  #     GOOGLE_SCOPE: email,profile
+      # Google Auth Config
+      GOOGLE_CLIENT_ID: $$cap_gen_random_hex(32)
+      GOOGLE_CLIENT_SECRET: $$cap_gen_random_hex(32)
+      GOOGLE_CALLBACK_URL: http://localhost:3170/v1/auth/google/callback
+      GOOGLE_SCOPE: email,profile
 
-  #     # Github Auth Config
-  #     GITHUB_CLIENT_ID: $$cap_gen_random_hex(32)
-  #     GITHUB_CLIENT_SECRET: $$cap_gen_random_hex(32)
-  #     GITHUB_CALLBACK_URL: http://localhost:3170/v1/auth/github/callback
-  #     GITHUB_SCOPE: user:email
+      # Github Auth Config
+      GITHUB_CLIENT_ID: $$cap_gen_random_hex(32)
+      GITHUB_CLIENT_SECRET: $$cap_gen_random_hex(32)
+      GITHUB_CALLBACK_URL: http://localhost:3170/v1/auth/github/callback
+      GITHUB_SCOPE: user:email
 
-  #     # Microsoft Auth Config
-  #     MICROSOFT_CLIENT_ID: $$cap_gen_random_hex(32)
-  #     MICROSOFT_CLIENT_SECRET: $$cap_gen_random_hex(32)
-  #     MICROSOFT_CALLBACK_URL: http://localhost:3170/v1/auth/microsoft/callback
-  #     MICROSOFT_SCOPE: user.read
-  #     MICROSOFT_TENANT: common
+      # Microsoft Auth Config
+      MICROSOFT_CLIENT_ID: $$cap_gen_random_hex(32)
+      MICROSOFT_CLIENT_SECRET: $$cap_gen_random_hex(32)
+      MICROSOFT_CALLBACK_URL: http://localhost:3170/v1/auth/microsoft/callback
+      MICROSOFT_SCOPE: user.read
+      MICROSOFT_TENANT: common
 
-  #     # Mailer config
-  #     MAILER_SMTP_ENABLE: true
-  #     MAILER_USE_CUSTOM_CONFIGS: false
-  #     MAILER_ADDRESS_FROM: <from@example.com>
-  #     MAILER_SMTP_URL: smtps://user@domain.com:pass@smtp.domain.com # used if custom mailer configs is false
-  #     # The following are used if custom mailer configs is true
-  #     MAILER_SMTP_HOST: smtp.domain.com
-  #     MAILER_SMTP_PORT: 587
-  #     MAILER_SMTP_SECURE: true
-  #     MAILER_SMTP_USER: user@domain.com
-  #     MAILER_SMTP_PASSWORD: pass
-  #     MAILER_TLS_REJECT_UNAUTHORIZED: true
+      # Mailer config
+      MAILER_SMTP_ENABLE: true
+      MAILER_USE_CUSTOM_CONFIGS: false
+      MAILER_ADDRESS_FROM: <from@example.com>
+      MAILER_SMTP_URL: smtps://user@domain.com:pass@smtp.domain.com # used if custom mailer configs is false
+      # The following are used if custom mailer configs is true
+      MAILER_SMTP_HOST: smtp.domain.com
+      MAILER_SMTP_PORT: 587
+      MAILER_SMTP_SECURE: true
+      MAILER_SMTP_USER: user@domain.com
+      MAILER_SMTP_PASSWORD: pass
+      MAILER_TLS_REJECT_UNAUTHORIZED: true
 
-  #     # Rate Limit Config
-  #     RATE_LIMIT_TTL: 60 # In seconds
-  #     RATE_LIMIT_MAX: 100 # Max requests per IP
+      # Rate Limit Config
+      RATE_LIMIT_TTL: 60 # In seconds
+      RATE_LIMIT_MAX: 100 # Max requests per IP
   $$cap_appname-app:
     image: hoppscotch/hoppscotch-frontend:latest
     restart: always
-    # depends_on:
-    #   - $$cap_appname-backend
+    depends_on:
+      - $$cap_appname-backend
     environment:
       # Base URLs
       VITE_BASE_URL: http://localhost:3000
@@ -97,50 +97,50 @@ services:
 
       # Set to `true` for subpath based access
       ENABLE_SUBPATH_BASED_ACCESS: false
-  # $$cap_appname-admin:
-  #   image: hoppscotch/hoppscotch-admin:latest
-  #   restart: always
-  #   depends_on:
-  #     - $$cap_appname-backend
-  #   environment:
-  #     # Base URLs
-  #     VITE_BASE_URL: http://localhost:3000
-  #     VITE_SHORTCODE_BASE_URL: http://localhost:3000
-  #     VITE_ADMIN_URL: http://localhost:3100
+  $$cap_appname-admin:
+    image: hoppscotch/hoppscotch-admin:latest
+    restart: always
+    depends_on:
+      - $$cap_appname-backend
+    environment:
+      # Base URLs
+      VITE_BASE_URL: http://localhost:3000
+      VITE_SHORTCODE_BASE_URL: http://localhost:3000
+      VITE_ADMIN_URL: http://localhost:3100
 
-  #     # Backend URLs
-  #     VITE_BACKEND_GQL_URL: http://localhost:3170/graphql
-  #     VITE_BACKEND_WS_URL: wss://localhost:3170/graphql
-  #     VITE_BACKEND_API_URL: http://localhost:3170/v1
+      # Backend URLs
+      VITE_BACKEND_GQL_URL: http://localhost:3170/graphql
+      VITE_BACKEND_WS_URL: wss://localhost:3170/graphql
+      VITE_BACKEND_API_URL: http://localhost:3170/v1
 
-  #     # Terms Of Service And Privacy Policy Links (Optional)
-  #     VITE_APP_TOS_LINK: https://docs.hoppscotch.io/support/terms
-  #     VITE_APP_PRIVACY_POLICY_LINK: https://docs.hoppscotch.io/support/privacy
+      # Terms Of Service And Privacy Policy Links (Optional)
+      VITE_APP_TOS_LINK: https://docs.hoppscotch.io/support/terms
+      VITE_APP_PRIVACY_POLICY_LINK: https://docs.hoppscotch.io/support/privacy
 
-  #     # Set to `true` for subpath based access
-  #     ENABLE_SUBPATH_BASED_ACCESS: false
+      # Set to `true` for subpath based access
+      ENABLE_SUBPATH_BASED_ACCESS: false
 caproverOneClickApp:
-    # variables:
-    #   - id: $$cap_db_version
-    #     label: Database Version
-    #     description: The version of the database to use
-    #     defaultValue: '15'
-    #     validRegex: /^[0-9.]+$/
-    #   - id: $$cap_db_user
-    #     label: Database User
-    #     description: The user to use for the database
-    #     defaultValue: hoppscotch_user
-    #     validRegex: /^[a-z0-9_]+$/
-    #   - id: $$cap_db_password
-    #     label: Database Password
-    #     description: 'The password to use for the database'
-    #     defaultValue: $$cap_gen_random_hex(16)
-    #     validRegex: /^(\w|[^\s"'\\])+$/
-    #   - id: $$cap_db_name
-    #     label: Database Name
-    #     description: The name of the database to use
-    #     defaultValue: hoppscotch
-    #     validRegex: /^[a-z0-9_]+$/
+    variables:
+      - id: $$cap_db_version
+        label: Database Version
+        description: The version of the database to use
+        defaultValue: '15'
+        validRegex: /^[0-9.]+$/
+      - id: $$cap_db_user
+        label: Database User
+        description: The user to use for the database
+        defaultValue: hoppscotch_user
+        validRegex: /^[a-z0-9_]+$/
+      - id: $$cap_db_password
+        label: Database Password
+        description: 'The password to use for the database'
+        defaultValue: $$cap_gen_random_hex(16)
+        validRegex: /^(\w|[^\s"'\\])+$/
+      - id: $$cap_db_name
+        label: Database Name
+        description: The name of the database to use
+        defaultValue: hoppscotch
+        validRegex: /^[a-z0-9_]+$/
     instructions:
       start: >-
         Hoppscotch is an open-source API development ecosystem. It helps you create, share, maintain, and visualize APIs. This one-click app will deploy Hoppscotch with a PostgreSQL database.
