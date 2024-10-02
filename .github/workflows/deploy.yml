@@ -1,6 +1,7 @@
 name: Publish One Click Apps
 
 on:
+  workflow_dispatch:
   push:
     branches: [master]
 
