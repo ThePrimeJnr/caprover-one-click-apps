@@ -1,7 +1,8 @@
 captainVersion: 4
 services:
-  documenso-db:
+  $$cap_appname-db:
     image: postgres:15
+    restart: always
     environment:
       POSTGRES_USER: $$cap_db_user
       POSTGRES_PASSWORD: $$cap_db_password
@@ -11,11 +12,9 @@ services:
     caproverExtra:
       notExposeAsWebApp: true
 
-  documenso:
+  $$cap_appname:
     image: documenso/documenso:latest
-    depends_on:
-      documenso-db:
-        condition: service_healthy
+    restart: always
     environment:
       PORT: $$cap_app_port
       NEXTAUTH_URL: $$cap_nextauth_url
