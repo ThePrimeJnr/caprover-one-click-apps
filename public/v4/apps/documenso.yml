@@ -1,0 +1,211 @@
+captainVersion: 4
+services:
+  documenso-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: $$cap_db_user
+      POSTGRES_PASSWORD: $$cap_db_password
+      POSTGRES_DB: $$cap_db_name
+    volumes:
+      - $$cap_appname-db-data:/var/lib/postgresql/data
+    caproverExtra:
+      notExposeAsWebApp: true
+      
+  documenso:
+    image: documenso/documenso:latest
+    depends_on:
+      documenso-db:
+        condition: service_healthy
+    environment:
+      PORT: $$cap_app_port
+      NEXTAUTH_URL: $$cap_nextauth_url
+      NEXTAUTH_SECRET: $$cap_nextauth_secret
+      NEXT_PRIVATE_ENCRYPTION_KEY: $$cap_encryption_key
+      NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY: $$cap_encryption_secondary_key
+      NEXT_PRIVATE_GOOGLE_CLIENT_ID: $$cap_google_client_id
+      NEXT_PRIVATE_GOOGLE_CLIENT_SECRET: $$cap_google_client_secret
+      NEXT_PUBLIC_WEBAPP_URL: $$cap_public_webapp_url
+      NEXT_PRIVATE_INTERNAL_WEBAPP_URL: $$cap_internal_webapp_url
+      NEXT_PUBLIC_MARKETING_URL: $$cap_marketing_url
+      NEXT_PRIVATE_DATABASE_URL: $$cap_database_url
+      NEXT_PRIVATE_DIRECT_DATABASE_URL: $$cap_direct_database_url
+      NEXT_PUBLIC_UPLOAD_TRANSPORT: $$cap_upload_transport
+      NEXT_PRIVATE_UPLOAD_ENDPOINT: $$cap_upload_endpoint
+      NEXT_PRIVATE_UPLOAD_FORCE_PATH_STYLE: $$cap_upload_force_path_style
+      NEXT_PRIVATE_UPLOAD_REGION: $$cap_upload_region
+      NEXT_PRIVATE_UPLOAD_BUCKET: $$cap_upload_bucket
+      NEXT_PRIVATE_UPLOAD_ACCESS_KEY_ID: $$cap_upload_access_key_id
+      NEXT_PRIVATE_UPLOAD_SECRET_ACCESS_KEY: $$cap_upload_secret_access_key
+      NEXT_PRIVATE_SMTP_TRANSPORT: $$cap_smtp_transport
+      NEXT_PRIVATE_SMTP_HOST: $$cap_smtp_host
+      NEXT_PRIVATE_SMTP_PORT: $$cap_smtp_port
+      NEXT_PRIVATE_SMTP_USERNAME: $$cap_smtp_username
+      NEXT_PRIVATE_SMTP_PASSWORD: $$cap_smtp_password
+      NEXT_PRIVATE_SMTP_APIKEY_USER: $$cap_smtp_apikey_user
+      NEXT_PRIVATE_SMTP_APIKEY: $$cap_smtp_apikey
+      NEXT_PRIVATE_SMTP_SECURE: $$cap_smtp_secure
+      NEXT_PRIVATE_SMTP_FROM_NAME: $$cap_smtp_from_name
+      NEXT_PRIVATE_SMTP_FROM_ADDRESS: $$cap_smtp_from_address
+      NEXT_PRIVATE_RESEND_API_KEY: $$cap_resend_api_key
+      NEXT_PRIVATE_MAILCHANNELS_API_KEY: $$cap_mailchannels_api_key
+      NEXT_PRIVATE_MAILCHANNELS_ENDPOINT: $$cap_mailchannels_endpoint
+      NEXT_PRIVATE_MAILCHANNELS_DKIM_DOMAIN: $$cap_mailchannels_dkim_domain
+      NEXT_PRIVATE_MAILCHANNELS_DKIM_SELECTOR: $$cap_mailchannels_dkim_selector
+      NEXT_PRIVATE_MAILCHANNELS_DKIM_PRIVATE_KEY: $$cap_mailchannels_dkim_private_key
+      NEXT_PUBLIC_DOCUMENT_SIZE_UPLOAD_LIMIT: $$cap_document_size_upload_limit
+      NEXT_PUBLIC_POSTHOG_KEY: $$cap_posthog_key
+      NEXT_PUBLIC_DISABLE_SIGNUP: $$cap_disable_signup
+      NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH: $$cap_signing_local_file_path
+    volumes:
+      - /opt/documenso/cert.p12:/opt/documenso/cert.p12
+
+volumes:
+  documenso-db-data:
+
+caproverOneClickApp:
+  variables:
+    - id: $$cap_db_user
+      label: Database User
+      description: The user for the PostgreSQL database
+      defaultValue: documenso_user
+      validRegex: /^[a-z0-9_]+$/
+    - id: $$cap_db_password
+      label: Database Password
+      description: Password for the PostgreSQL database user
+      defaultValue: $$cap_gen_random_hex(16)
+      validRegex: /^(\w|[^\s"'\\])+$/
+    - id: $$cap_db_name
+      label: Database Name
+      description: Name of the PostgreSQL database
+      defaultValue: documenso
+      validRegex: /^[a-z0-9_]+$/
+    - id: $$cap_app_port
+      label: Application Port
+      description: Port on which the application will run
+      defaultValue: '3000'
+      validRegex: /^[0-9]+$/
+    - id: $$cap_nextauth_url
+      label: NextAuth URL
+      description: URL for NextAuth
+      defaultValue: 'http://localhost:3000'
+    - id: $$cap_nextauth_secret
+      label: NextAuth Secret
+      description: Secret for NextAuth
+      defaultValue: $$cap_gen_random_hex(32)
+    - id: $$cap_encryption_key
+      label: Encryption Key
+      description: Encryption key for sensitive data
+      defaultValue: $$cap_gen_random_hex(32)
+    - id: $$cap_encryption_secondary_key
+      label: Secondary Encryption Key
+      description: Secondary encryption key for sensitive data
+      defaultValue: $$cap_gen_random_hex(32)
+    - id: $$cap_google_client_id
+      label: Google Client ID
+      description: Google client ID for authentication
+    - id: $$cap_google_client_secret
+      label: Google Client Secret
+      description: Google client secret for authentication
+    - id: $$cap_public_webapp_url
+      label: Public WebApp URL
+      description: URL of the public web app
+      defaultValue: 'https://documenso.com'
+    - id: $$cap_internal_webapp_url
+      label: Internal WebApp URL
+      description: URL of the internal web app
+      defaultValue: 'http://localhost:3000'
+    - id: $$cap_marketing_url
+      label: Marketing URL
+      description: URL for marketing
+      defaultValue: 'https://documenso.com'
+    - id: $$cap_database_url
+      label: Database URL
+      description: Database URL for the application
+    - id: $$cap_direct_database_url
+      label: Direct Database URL
+      description: Direct database URL for the application
+    - id: $$cap_upload_transport
+      label: Upload Transport
+      description: Method for document uploads
+      defaultValue: 'database'
+    - id: $$cap_upload_endpoint
+      label: Upload Endpoint
+      description: Endpoint for document uploads
+    - id: $$cap_upload_force_path_style
+      label: Force Path Style
+      description: Set to true to force path style for S3
+    - id: $$cap_upload_region
+      label: Upload Region
+      description: S3 upload region
+    - id: $$cap_upload_bucket
+      label: Upload Bucket
+      description: S3 upload bucket name
+    - id: $$cap_upload_access_key_id
+      label: Upload Access Key ID
+      description: S3 access key ID
+    - id: $$cap_upload_secret_access_key
+      label: Upload Secret Access Key
+      description: S3 secret access key
+    - id: $$cap_smtp_transport
+      label: SMTP Transport
+      description: SMTP transport method
+    - id: $$cap_smtp_host
+      label: SMTP Host
+      description: SMTP host address
+    - id: $$cap_smtp_port
+      label: SMTP Port
+      description: SMTP port number
+      defaultValue: '587'
+    - id: $$cap_smtp_username
+      label: SMTP Username
+      description: SMTP username for authentication
+    - id: $$cap_smtp_password
+      label: SMTP Password
+      description: SMTP password for authentication
+    - id: $$cap_smtp_apikey_user
+      label: SMTP API Key User
+      description: User for SMTP API key
+    - id: $$cap_smtp_apikey
+      label: SMTP API Key
+      description: API key for SMTP authentication
+    - id: $$cap_smtp_secure
+      label: SMTP Secure
+      description: Use secure SMTP
+      defaultValue: 'true'
+    - id: $$cap_smtp_from_name
+      label: SMTP From Name
+      description: From name for SMTP
+    - id: $$cap_smtp_from_address
+      label: SMTP From Address
+      description: From email address for SMTP
+    - id: $$cap_resend_api_key
+      label: Resend API Key
+      description: API key for Resend service
+    - id: $$cap_mailchannels_api_key
+      label: MailChannels API Key
+      description: API key for MailChannels service
+    - id: $$cap_mailchannels_endpoint
+      label: MailChannels Endpoint
+      description: Endpoint for MailChannels service
+    - id: $$cap_mailchannels_dkim_domain
+      label: MailChannels DKIM Domain
+      description: DKIM domain for MailChannels service
+    - id: $$cap_mailchannels_dkim_selector
+      label: MailChannels DKIM Selector
+      description: DKIM selector for MailChannels service
+    - id: $$cap_mailchannels_dkim_private_key
+      label: MailChannels DKIM Private Key
+      description: Private key for DKIM
+    - id: $$cap_document_size_upload_limit
+      label: Document Size Upload Limit
+      description: Maximum upload size for documents
+      defaultValue: '104857600'
+    - id: $$cap_posthog_key
+      label: PostHog Key
+      description: Key for PostHog analytics
+    - id: $$cap_disable_signup
+      label: Disable Signup
+      description: Set to true to disable signup
+    - id: $$cap_signing_local_file_path
+      label: Local File Path
+      description: Path to local file for signing
