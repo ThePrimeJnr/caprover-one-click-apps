@@ -120,33 +120,33 @@ services:
       # Set to `true` for subpath based access
       ENABLE_SUBPATH_BASED_ACCESS: false
 caproverOneClickApp:
-    variables:
-      - id: $$cap_db_version
-        label: Database Version
-        description: The version of the database to use
-        defaultValue: '15'
-        validRegex: /^[0-9.]+$/
-      - id: $$cap_db_user
-        label: Database User
-        description: The user to use for the database
-        defaultValue: hoppscotch_user
-        validRegex: /^[a-z0-9_]+$/
-      - id: $$cap_db_password
-        label: Database Password
-        description: 'The password to use for the database'
-        defaultValue: $$cap_gen_random_hex(16)
-        validRegex: /^(\w|[^\s"'\\])+$/
-      - id: $$cap_db_name
-        label: Database Name
-        description: The name of the database to use
-        defaultValue: hoppscotch
-        validRegex: /^[a-z0-9_]+$/
-    instructions:
-      start: >-
-        Hoppscotch is an open-source API development ecosystem. It helps you create, share, maintain, and visualize APIs. This one-click app will deploy Hoppscotch with a PostgreSQL database.
-      end: >-
-        Hoppscotch is now deployed and ready to use. You can access it by clicking on the "Open Web App" button below.
-    displayName: Hoppscotch
-    isOfficial: true
-    description: An open-source API development ecosystem
-    documentation: https://hoppscotch.io
+  variables:
+    - id: $$cap_db_version
+      label: Database Version
+      description: The version of the database to use
+      defaultValue: "15"
+      validRegex: /^[0-9.]+$/
+    - id: $$cap_db_user
+      label: Database User
+      description: The user to use for the database
+      defaultValue: hoppscotch_user
+      validRegex: /^[a-z0-9_]+$/
+    - id: $$cap_db_password
+      label: Database Password
+      description: "The password to use for the database"
+      defaultValue: $$cap_gen_random_hex(16)
+      validRegex: /^(\w|[^\s"'\\])+$/
+    - id: $$cap_db_name
+      label: Database Name
+      description: The name of the database to use
+      defaultValue: hoppscotch
+      validRegex: /^[a-z0-9_]+$/
+  instructions:
+    start: >-
+      Hoppscotch is an open-source API development ecosystem. It helps you create, share, maintain, and visualize APIs. This one-click app will deploy Hoppscotch with a PostgreSQL database.
+    end: >-
+      Hoppscotch is now deployed and ready to use. You can access it by clicking on the "Open Web App" button below.
+  displayName: Hoppscotch
+  isOfficial: false
+  description: An open-source API development ecosystem
+  documentation: https://hoppscotch.io
