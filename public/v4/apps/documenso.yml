@@ -211,5 +211,10 @@ caproverOneClickApp:
       description: Path to local file for signing
   displayName: Documenso
   description: Documenso is a document management system for businesses
-  instructions: Documenso is a document management system for businesses. It allows you to securely store, manage, and share documents with your team. To get started, fill in the required fields and click Deploy.
+  instructions:
+    start: >-
+      Documenso is a document management system for businesses. It allows you to store, manage, and share documents securely. To get started, click the "Deploy" button below and fill in the required information. Once the deployment is complete, you can access Documenso by visiting the URL provided.
+    end: >-
+      Documenso is now deployed and ready to use. You can access it by clicking on the "Open Web App" button below.
   isOfficial: false
+  documentation: https://documenso.com
